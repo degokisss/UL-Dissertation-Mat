@@ -1,0 +1,53 @@
+{
+    "0": {
+        "classes": [
+            "CatalogService",
+            "Product",
+            "Category",
+            "AbstractActionBean",
+            "CatalogActionBean"
+        ],
+        "business_context": [
+            "catalog",
+            "cart",
+            "account",
+            "order"
+        ]
+    },
+    "1": {
+        "classes": [
+            "Cart",
+            "CartItem",
+            "CartActionBean",
+            "Item"
+        ],
+        "business_context": [
+            "cart",
+            "order",
+            "catalog"
+        ]
+    },
+    "2": {
+        "classes": [
+            "AccountActionBean",
+            "Account",
+            "AccountService"
+        ],
+        "business_context": [
+            "account",
+            "order"
+        ]
+    },
+    "3": {
+        "classes": [
+            "Order",
+            "LineItem",
+            "OrderActionBean",
+            "OrderService",
+            "Sequence"
+        ],
+        "business_context": [
+            "order"
+        ]
+    }
+}
