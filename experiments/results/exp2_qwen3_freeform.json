@@ -1,0 +1,14 @@
+{
+  "_model": "qwen3:32b",
+  "_mode": "free-form (no constraint)",
+  "_note": "Scored partition. Contains 8 hallucinated classes not present in JPetStore (AccountDao, CatalogDao, OrderDao, InventoryDao, PaymentDao, JdbcConnection, JdbcDao, JdbcDaoSupport). Metrics: ICP=0.759 ACS=3.143 BCP=0.876 CHI=0.241 NED=0.497 GS=0.542.",
+  "services": [
+    {"name": "UserManagementService", "classes": ["Account", "AccountActionBean", "AccountDao"]},
+    {"name": "ProductCatalogService", "classes": ["Category", "Product", "Item", "CatalogDao", "CatalogActionBean"]},
+    {"name": "ShoppingCartService", "classes": ["Cart", "CartActionBean"]},
+    {"name": "OrderProcessingService", "classes": ["Order", "OrderActionBean", "OrderDao"]},
+    {"name": "InventoryService", "classes": ["InventoryDao"]},
+    {"name": "PaymentService", "classes": ["PaymentDao"]},
+    {"name": "CommonService", "classes": ["JdbcConnection", "JdbcDaoSupport", "JdbcDao"]}
+  ]
+}

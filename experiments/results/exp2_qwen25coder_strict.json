@@ -1,0 +1,13 @@
+{
+  "_model": "qwen2.5-coder:32b",
+  "_mode": "strict (enum-constrained decoding + validate-and-repair)",
+  "_repair_rounds": 2,
+  "_note": "Valid faithful partition: all 24 provided classes, 0 invented. Metrics: ICP=0.569 ACS=3.2 BCP=0.708 CHI=0.431 NED=0.555 GS=0.699.",
+  "services": [
+    {"name": "AccountManagementService", "classes": ["AbstractActionBean", "AccountActionBean", "Account", "AccountMapper", "AccountService"]},
+    {"name": "CartService", "classes": ["CartActionBean", "Cart", "CartItem"]},
+    {"name": "CatalogManagementService", "classes": ["CatalogActionBean", "Category", "Item", "Product", "CategoryMapper", "ItemMapper", "ProductMapper", "CatalogService"]},
+    {"name": "OrderManagementService", "classes": ["OrderActionBean", "Order", "LineItem", "OrderMapper", "LineItemMapper", "OrderService"]},
+    {"name": "SequenceManagementService", "classes": ["Sequence", "SequenceMapper"]}
+  ]
+}

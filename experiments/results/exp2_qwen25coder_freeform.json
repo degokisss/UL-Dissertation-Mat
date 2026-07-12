@@ -1,0 +1,12 @@
+{
+  "_model": "qwen2.5-coder:32b",
+  "_mode": "free-form (no constraint)",
+  "_note": "Scored partition. Contains 31 hallucinated classes: a full Spring-style Controller/RestController/Service/ServiceImpl/Repository/RepositoryImpl/Dao/Mapper/Validator/Exception stack for User/Cart/Catalog, plus User/UserActionBean. Metrics: ICP=0.69 ACS=4.4 BCP=0.892 CHI=0.31 NED=0.418 GS=0.446.",
+  "services": [
+    {"name": "AccountService", "classes": ["AccountActionBean", "Account"]},
+    {"name": "OrderService", "classes": ["OrderActionBean", "Order", "OrderService"]},
+    {"name": "CatalogService", "classes": ["Category", "Product", "Item", "CatalogDao", "CatalogMapper", "CatalogService", "CatalogServiceImpl", "CatalogController", "CatalogRestController", "CatalogRepository", "CatalogRepositoryImpl", "CatalogException", "CatalogValidator"]},
+    {"name": "CartService", "classes": ["CartActionBean", "Cart", "CartItem", "CartDao", "CartMapper", "CartService", "CartServiceImpl", "CartController", "CartRestController", "CartRepository", "CartRepositoryImpl", "CartException", "CartValidator"]},
+    {"name": "UserService", "classes": ["UserActionBean", "User", "UserDao", "UserMapper", "UserService", "UserServiceImpl", "UserController", "UserRestController", "UserRepository", "UserRepositoryImpl", "UserException", "UserValidator"]}
+  ]
+}
