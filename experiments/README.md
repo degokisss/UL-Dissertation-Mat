@@ -13,7 +13,7 @@ ollama pull qwen3:32b   # or qwen3-coder:30b (no "thinking", faster)
 ## 1. Point the scripts at Ollama
 ```bash
 export LLM_BASE_URL=http://localhost:11434/v1
-export LLM_MODEL=qwen3:32b        # the model you pulled
+export LLM_MODEL=qwen3:32b        # the model was pulled
 export LLM_KEY=ollama             # any value; Ollama ignores it
 ```
 
@@ -40,4 +40,4 @@ against the manual baseline (`../service-cutter/jpetstore_2_user_representations
 - The scripts strip Qwen3 `<think>...</think>` blocks automatically, so a "thinking"
   model still yields clean JSON. For speed, use `qwen3-coder:30b` instead.
 - Prompts + generation params are documented in `prompts.md`.
-- Copy the two output JSON files back to your machine to write the results into the thesis.
+- Copy the two output JSON files back to machine to write the results into the thesis.
