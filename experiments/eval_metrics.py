@@ -103,6 +103,15 @@ def main():
     ap.add_argument("--graph", default=DEFAULT_GRAPH)
     a = ap.parse_args()
     part = load_partition(a.partition)
+    # faithfulness: did the model partition the REAL classes, or invent/miss some?
+    known = set(c for cl in REFERENCE.values() for c in cl)
+    given = set(c for cl in part.values() for c in cl)
+    invented, missing = sorted(given - known), sorted(known - given)
+    if invented or missing:
+        print(f"[faithfulness] covered {len(given & known)}/{len(known)} real classes")
+        if invented: print(f"[faithfulness] INVENTED (not in JPetStore): {invented}")
+        if missing:  print(f"[faithfulness] MISSED (real, not partitioned): {missing}")
+        print()
     d = json.load(open(a.graph))
     edges = [(S(e["source"]), S(e["target"]), e.get("weight", 1)) for e in d["edges"]]
     m = metrics(part, edges); gj = gs_jaccard(part)
