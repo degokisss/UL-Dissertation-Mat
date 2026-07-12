@@ -32,28 +32,45 @@ REFERENCE = {
   "OrderService":   ["Order", "LineItem", "OrderService", "OrderActionBean", "Sequence"],
 }
 
-def _find_service_list(d):
-    if isinstance(d, list):
+def _strip(c):
+    return c.split(".")[-1] if isinstance(c, str) else c
+
+def _service_list(d):
+    """A list of service dicts, or None."""
+    if isinstance(d, list) and d and isinstance(d[0], dict):
         return d
     if isinstance(d, dict):
         if isinstance(d.get("services"), list):
             return d["services"]
-        for v in d.values():                       # any list of dicts that look like services
+        for v in d.values():
             if isinstance(v, list) and v and isinstance(v[0], dict) and \
                any(k in v[0] for k in ("classes", "members", "classNames")):
                 return v
-    raise ValueError("could not locate a services list in the JSON")
+    return None
+
+def _name_to_classes(d):
+    """A dict mapping serviceName -> [classes], possibly under a wrapper key, or None."""
+    for cand in (d.get("services"), d.get("decomposition"), d.get("microservices"), d) if isinstance(d, dict) else ():
+        if isinstance(cand, dict) and cand and all(isinstance(v, list) for v in cand.values()):
+            return cand
+    return None
 
 def load_partition(path):
     if not path:
         return REFERENCE
     d = json.load(open(path))
-    part = {}
-    for s in _find_service_list(d):
-        name = s.get("name") or s.get("service") or s.get("serviceName") or f"Service{len(part)+1}"
-        classes = s.get("classes") or s.get("members") or s.get("classNames") or []
-        part[name] = [c.split(".")[-1] if isinstance(c, str) else c for c in classes]
-    return part
+    lst = _service_list(d)
+    if lst is not None:
+        part = {}
+        for s in lst:
+            name = s.get("name") or s.get("service") or s.get("serviceName") or f"Service{len(part)+1}"
+            classes = s.get("classes") or s.get("members") or s.get("classNames") or []
+            part[name] = [_strip(c) for c in classes]
+        return part
+    nmap = _name_to_classes(d)
+    if nmap is not None:
+        return {k: [_strip(c) for c in v] for k, v in nmap.items()}
+    raise ValueError("could not locate services in the JSON; please share the file so the parser can be adjusted")
 
 def metrics(part, edges):
     c2s = {c: s for s, cl in part.items() for c in cl}
