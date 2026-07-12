@@ -32,11 +32,28 @@ REFERENCE = {
   "OrderService":   ["Order", "LineItem", "OrderService", "OrderActionBean", "Sequence"],
 }
 
+def _find_service_list(d):
+    if isinstance(d, list):
+        return d
+    if isinstance(d, dict):
+        if isinstance(d.get("services"), list):
+            return d["services"]
+        for v in d.values():                       # any list of dicts that look like services
+            if isinstance(v, list) and v and isinstance(v[0], dict) and \
+               any(k in v[0] for k in ("classes", "members", "classNames")):
+                return v
+    raise ValueError("could not locate a services list in the JSON")
+
 def load_partition(path):
     if not path:
         return REFERENCE
     d = json.load(open(path))
-    return {s["name"]: s["classes"] for s in d["services"]}
+    part = {}
+    for s in _find_service_list(d):
+        name = s.get("name") or s.get("service") or s.get("serviceName") or f"Service{len(part)+1}"
+        classes = s.get("classes") or s.get("members") or s.get("classNames") or []
+        part[name] = [c.split(".")[-1] if isinstance(c, str) else c for c in classes]
+    return part
 
 def metrics(part, edges):
     c2s = {c: s for s, cl in part.items() for c in cl}
