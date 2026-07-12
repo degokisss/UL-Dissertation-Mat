@@ -51,14 +51,28 @@ def fmt_graph(path):
     return "\n".join(f"  {S(e['source'])} -> {S(e['target'])} : {e.get('weight',1)}"
                      for e in sorted(d.get("edges", []), key=lambda e: -e.get("weight", 1)))
 
-def call_llm(system, user):
+def decomposition_schema(classes):
+    """JSON schema whose class items are an enum of the real class names, so the
+    decoder structurally cannot emit an invented class (grammar-constrained)."""
+    return {"type": "json_schema", "json_schema": {"name": "decomposition", "strict": True,
+        "schema": {"type": "object", "additionalProperties": False,
+            "properties": {"services": {"type": "array", "items": {
+                "type": "object", "additionalProperties": False,
+                "properties": {
+                    "name": {"type": "string"},
+                    "classes": {"type": "array", "items": {"type": "string", "enum": classes}},
+                    "rationale": {"type": "string"}},
+                "required": ["name", "classes", "rationale"]}}},
+            "required": ["services"]}}}
+
+def call_llm(messages, response_format):
     base = os.environ.get("LLM_BASE_URL", "http://localhost:8000/v1")
     body = json.dumps({
         "model": os.environ.get("LLM_MODEL", "qwen-coder-32b"),
         "temperature": float(os.environ.get("LLM_TEMPERATURE", "0.2")),
         "top_p": 0.95, "seed": int(os.environ.get("LLM_SEED", "42")), "max_tokens": 8192,
-        "response_format": {"type": "json_object"},   # force valid JSON (Ollama constrains generation)
-        "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
+        "response_format": response_format,
+        "messages": messages,
     }).encode()
     req = urllib.request.Request(base.rstrip("/") + "/chat/completions", data=body,
         headers={"Content-Type": "application/json",
@@ -88,6 +102,9 @@ def main():
     ap.add_argument("--src", required=True); ap.add_argument("--graph", default="")
     ap.add_argument("--package", default="", help="comma-separated package filter, e.g. domain,application,interfaces")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--free", dest="strict", action="store_false",
+                    help="free-form prompting (no enum constraint / repair); use to reproduce the hallucination baseline")
+    ap.add_argument("--max-repairs", type=int, default=3, help="max validate-and-repair rounds in strict mode")
     a = ap.parse_args()
     pkgs = [p.strip() for p in a.package.split(",") if p.strip()]
     source, classes = read_sources(a.src, pkgs)
@@ -99,15 +116,36 @@ def main():
             f"{len(classes)} classes listed above (every one, exactly once); "
             "do not introduce any new service, entity, or class name.")
     print(f"[exp2] {a.app}: {len(classes)} classes, prompt ~{len(user)//4} tokens; calling LLM...", file=sys.stderr)
-    raw = call_llm(SYSTEM, user)
-    open(a.out + ".raw.txt", "w").write(raw)          # keep raw model output for debug/repro
-    try:
-        result = extract_json(raw)
-    except Exception as e:
-        print(f"[exp2] JSON parse failed: {e}\n[exp2] raw model output saved to {a.out}.raw.txt", file=sys.stderr)
-        raise
+    known = set(classes)
+    rf = decomposition_schema(classes) if a.strict else {"type": "json_object"}
+    messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": user}]
+    rounds, result = 0, None
+    while True:
+        raw = call_llm(messages, rf)
+        open(a.out + ".raw.txt", "w").write(raw)      # keep last raw model output for debug/repro
+        try:
+            result = extract_json(raw)
+        except Exception as e:
+            print(f"[exp2] JSON parse failed: {e}\n[exp2] raw output saved to {a.out}.raw.txt", file=sys.stderr)
+            raise
+        placed = [c for s in result.get("services", []) for c in s.get("classes", [])]
+        extra   = sorted(set(placed) - known)
+        missing = sorted(known - set(placed))
+        dups    = sorted({c for c in placed if placed.count(c) > 1})
+        if not (extra or missing or dups) or not a.strict or rounds >= a.max_repairs:
+            break
+        rounds += 1
+        fix = "Your previous decomposition is invalid; correct it. "
+        if extra:   fix += f"Remove these (not real classes): {extra}. "
+        if missing: fix += f"Add these real classes, each in exactly one service: {missing}. "
+        if dups:    fix += f"These appear in more than one service, keep each once: {dups}. "
+        fix += (f"Return the full corrected JSON partitioning all {len(classes)} provided "
+                "classes, each exactly once, using only names from the class list.")
+        print(f"[exp2] repair round {rounds}: extra={extra} missing={missing} dups={dups}", file=sys.stderr)
+        messages += [{"role": "assistant", "content": raw}, {"role": "user", "content": fix}]
+    result["_repair_rounds"] = rounds
     json.dump(result, open(a.out, "w"), indent=2)
-    print(f"[exp2] saved {a.out}")
+    print(f"[exp2] saved {a.out} (repair rounds: {rounds})")
     for s in result.get("services", []):
         print(f"  {s['name']} ({len(s['classes'])}): {', '.join(s['classes'])}")
 
