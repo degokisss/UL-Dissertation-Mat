@@ -54,7 +54,8 @@ def call_llm(system, user):
     body = json.dumps({
         "model": os.environ.get("LLM_MODEL", "qwen-coder-32b"),
         "temperature": float(os.environ.get("LLM_TEMPERATURE", "0.2")),
-        "top_p": 0.95, "seed": int(os.environ.get("LLM_SEED", "42")), "max_tokens": 4096,
+        "top_p": 0.95, "seed": int(os.environ.get("LLM_SEED", "42")), "max_tokens": 8192,
+        "response_format": {"type": "json_object"},   # force valid JSON (Ollama constrains generation)
         "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
     }).encode()
     req = urllib.request.Request(base.rstrip("/") + "/chat/completions", data=body,
