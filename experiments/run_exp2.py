@@ -64,10 +64,20 @@ def call_llm(system, user):
         return json.load(r)["choices"][0]["message"]["content"]
 
 def extract_json(text):
-    text = re.sub(r"<think>.*?</think>", "", text, flags=re.S)          # strip Qwen3-style reasoning
-    text = re.sub(r"^```(json)?|```$", "", text.strip(), flags=re.M).strip()
-    i, j = text.find("{"), text.rfind("}")
-    return json.loads(text[i:j+1])
+    if "</think>" in text:                       # drop reasoning (even if opening tag is missing)
+        text = text.rsplit("</think>", 1)[-1]
+    text = re.sub(r"```(?:json)?", "", text).strip()
+    start = text.find("{")
+    if start < 0:
+        raise ValueError("no JSON object in model output")
+    depth = 0                                     # balanced-brace scan from first '{'
+    for i in range(start, len(text)):
+        if text[i] == "{": depth += 1
+        elif text[i] == "}":
+            depth -= 1
+            if depth == 0:
+                return json.loads(text[start:i + 1])
+    raise ValueError("unbalanced JSON braces")
 
 def main():
     ap = argparse.ArgumentParser()
@@ -85,7 +95,12 @@ def main():
             "\n\nPropose the microservice decomposition as specified.")
     print(f"[exp2] {a.app}: {len(classes)} classes, prompt ~{len(user)//4} tokens; calling LLM...", file=sys.stderr)
     raw = call_llm(SYSTEM, user)
-    result = extract_json(raw)
+    open(a.out + ".raw.txt", "w").write(raw)          # keep raw model output for debug/repro
+    try:
+        result = extract_json(raw)
+    except Exception as e:
+        print(f"[exp2] JSON parse failed: {e}\n[exp2] raw model output saved to {a.out}.raw.txt", file=sys.stderr)
+        raise
     json.dump(result, open(a.out, "w"), indent=2)
     print(f"[exp2] saved {a.out}")
     for s in result.get("services", []):

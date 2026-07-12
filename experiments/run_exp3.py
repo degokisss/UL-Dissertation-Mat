@@ -68,10 +68,20 @@ def call_llm(system, user):
         return json.load(r)["choices"][0]["message"]["content"]
 
 def extract_json(text):
-    text = re.sub(r"<think>.*?</think>", "", text, flags=re.S)          # strip Qwen3-style reasoning
-    text = re.sub(r"^```(json)?|```$", "", text.strip(), flags=re.M).strip()
-    i, j = text.find("{"), text.rfind("}")
-    return json.loads(text[i:j+1])
+    if "</think>" in text:                       # drop reasoning (even if opening tag is missing)
+        text = text.rsplit("</think>", 1)[-1]
+    text = re.sub(r"```(?:json)?", "", text).strip()
+    start = text.find("{")
+    if start < 0:
+        raise ValueError("no JSON object in model output")
+    depth = 0                                     # balanced-brace scan from first '{'
+    for i in range(start, len(text)):
+        if text[i] == "{": depth += 1
+        elif text[i] == "}":
+            depth -= 1
+            if depth == 0:
+                return json.loads(text[start:i + 1])
+    raise ValueError("unbalanced JSON braces")
 
 def main():
     ap = argparse.ArgumentParser()
@@ -85,7 +95,13 @@ def main():
     user = (f"Application: {a.app} — {a.desc}\n\nSource files:\n" + source +
             "\n\nProduce the Service Cutter user-representation JSON.")
     print(f"[exp3] {a.app}: prompt ~{len(user)//4} tokens; calling LLM...", file=sys.stderr)
-    result = extract_json(call_llm(SYSTEM, user))
+    raw = call_llm(SYSTEM, user)
+    open(a.out + ".raw.txt", "w").write(raw)          # keep raw model output for debug/repro
+    try:
+        result = extract_json(raw)
+    except Exception as e:
+        print(f"[exp3] JSON parse failed: {e}\n[exp3] raw model output saved to {a.out}.raw.txt", file=sys.stderr)
+        raise
     json.dump(result, open(a.out, "w"), indent=2)
     uc = result.get("useCases", []); sg = result.get("sharedOwnerGroups", [])
     print(f"[exp3] saved {a.out}: {len(uc)} use cases, {len(sg)} shared-owner groups")
