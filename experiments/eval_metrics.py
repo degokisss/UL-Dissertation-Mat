@@ -97,14 +97,23 @@ def gs_jaccard(part):
         js.append(max((len(g & set(p)) / len(g | set(p)) for p in part.values()), default=0))
     return round(sum(js) / len(js), 3)
 
+def known_classes(src):
+    """The real class universe = every .java filename under src (24 for JPetStore,
+    including the 7 Mapper interfaces). Falls back to the Sellami reference set."""
+    if not src:
+        return set(c for cl in REFERENCE.values() for c in cl)
+    import os
+    return {f[:-5] for _, _, files in os.walk(src) for f in files if f.endswith(".java")}
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--partition", default="")
     ap.add_argument("--graph", default=DEFAULT_GRAPH)
+    ap.add_argument("--src", default="", help="source dir; defines the real class universe for the faithfulness check")
     a = ap.parse_args()
     part = load_partition(a.partition)
     # faithfulness: did the model partition the REAL classes, or invent/miss some?
-    known = set(c for cl in REFERENCE.values() for c in cl)
+    known = known_classes(a.src)
     given = set(c for cl in part.values() for c in cl)
     invented, missing = sorted(given - known), sorted(known - given)
     if invented or missing:
