@@ -51,7 +51,8 @@ def _service_list(d):
 def _name_to_classes(d):
     """A dict mapping serviceName -> [classes], possibly under a wrapper key, or None."""
     for cand in (d.get("services"), d.get("decomposition"), d.get("microservices"), d) if isinstance(d, dict) else ():
-        if isinstance(cand, dict) and cand and all(isinstance(v, list) for v in cand.values()):
+        if isinstance(cand, dict) and cand and all(
+                isinstance(v, list) and all(isinstance(x, str) for x in v) for v in cand.values()):
             return cand
     return None
 

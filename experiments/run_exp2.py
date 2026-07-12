@@ -15,21 +15,23 @@ LLM endpoint via env (defaults match the deploy guide):
 """
 import argparse, json, os, re, sys, urllib.request
 
-SYSTEM = """You are a senior software architect who decomposes monolithic Java applications \
-into microservices. You are given a monolith's source code and its class-dependency \
-graph. Propose candidate service boundaries that maximise cohesion and minimise \
-coupling, grounded in the application's business capabilities and in the actual \
-dependencies between classes. Reason about the domain first, then decide.
+SYSTEM = """You are a senior software architect who decomposes ONE SPECIFIC EXISTING \
+monolithic Java application into microservices. You are given that application's actual \
+class list, class-dependency graph, and source code. Base the decomposition strictly on \
+THESE classes and their real dependencies. This is a concrete codebase, NOT a generic \
+e-commerce reference design: do not invent services, entities, databases, or classes that \
+are not in the provided class list, and do not reproduce a textbook microservices diagram.
 
-Output ONLY a single valid JSON object, with no markdown fences and no commentary, \
-matching exactly this schema:
+Output ONLY a single valid JSON object, no markdown, matching exactly this schema:
 {"services":[{"name":"<PascalCaseServiceName>","classes":["<SimpleClassName>", ...],"rationale":"<one concise sentence>"}]}
 
-Constraints:
-- Every application class listed in the input must appear in exactly one service.
-- Use simple class names (no package prefix), exactly as given in the input.
-- Do not invent, rename, merge away, split, or omit any class.
-- Choose the number of services that best fits the domain; do NOT pad to a target count."""
+Hard constraints:
+- The "classes" array of every service must contain ONLY names copied verbatim from the
+  provided class list. No invented entities (no User, Payment, Notification, Warehouse, etc.).
+- Every class in the provided list must appear in exactly one service; do not omit, rename,
+  split, or add classes.
+- Group by cohesion and by the actual dependencies shown; choose the number of services that
+  best fits the code, do NOT pad to a target count."""
 
 def read_sources(src, pkgs):
     out, classes = [], []
@@ -93,7 +95,9 @@ def main():
             f"Classes to partition ({len(classes)}):\n" + ", ".join(classes) + "\n\n"
             f"Class dependency graph (caller -> callee : weight = number of static references):\n"
             + fmt_graph(a.graph) + "\n\nSource files:\n" + source +
-            "\n\nPropose the microservice decomposition as specified.")
+            "\n\nPropose the microservice decomposition. Partition ONLY the "
+            f"{len(classes)} classes listed above (every one, exactly once); "
+            "do not introduce any new service, entity, or class name.")
     print(f"[exp2] {a.app}: {len(classes)} classes, prompt ~{len(user)//4} tokens; calling LLM...", file=sys.stderr)
     raw = call_llm(SYSTEM, user)
     open(a.out + ".raw.txt", "w").write(raw)          # keep raw model output for debug/repro
