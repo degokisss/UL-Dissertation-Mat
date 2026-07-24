@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="en-us">
+<style type="text/css">a {text-decoration: none}</style>
+<style type="text/css">a:hover {text-decoration: underline}</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="expires" content="0">
+<title> Mono2Micro DEEP PARTITION ANALYSIS - Application </title>
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/carbon-components/css/carbon-components.min.css">
+<script src="https://unpkg.com/carbon-components/scripts/carbon-components.min.js"></script>
+ 
+
+<style>  
+	.report_title { 
+	  padding-top: 2%;
+	  padding-bottom: 1%;
+	  display: block;
+	  overflow: hidden; 
+	  font-size: 30px;
+	  color: black;
+	  position: relative;
+  	  left: 10%;
+	  font-weight: bolder;	  
+	}
+	.version { 
+	  padding-top: 2%;
+	  padding-bottom: 1%;
+	  display: block;
+	  overflow: hidden; 
+	  font-size: 15px;
+	  color: black;
+	  position: relative;
+  	  left: 10%;
+	  
+	}
+	.collapsible {  
+	  cursor: pointer; 
+	  padding-top: 10px;
+	  padding-bottom: 10px;
+	  border: none;
+	  text-align: left;
+	  outline: none; 
+	  font-size: 20px;  
+	  position: relative;
+  	  left: 25%;	
+	}
+
+	.jclass {  
+	  display: list-item;
+	  overflow: hidden; 
+	  font-size: 15px;
+	  color: black;
+	  position: relative;   
+	  font-weight: bold;
+	}
+
+	.jfunction {  
+	  display: list-item;
+	  overflow: hidden; 
+	  font-size: 15px;
+	  color: black;
+	  position: relative;  
+	  padding-left: 2%;  
+	}	
+
+	.partition_header{   
+	  background-color: whitesmoke;
+	  color: black;
+	  cursor: pointer;
+	  padding-left: 2%;
+	  padding-top: 15px;
+	  padding-bottom: 15px;
+	  width: 80%;
+	  border: none;
+	  text-align: left;
+	  outline: none;
+	  font-size: 20px;
+	  font-weight: bold;  
+	  position: relative;
+  	  left: 10%;
+	}	
+
+	.extra {
+		background-color: #e6ecff;
+		color: black;
+	}
+
+	.arrow { 
+		color: black;
+	}
+</style>
+
+</head>
+
+<body>
+
+	<div>
+		<h1 class="report_title"> Mono2Micro DEEP PARTITION ANALYSIS - Application </h1> 
+		<br>
+	</div> 
+
+	 
+		<div class="bx--row">
+			<div class="bx--col bx--col-lg-8">
+			  <div class="bx--tile  partition_header" id="partition0"> <h4> partition0 Partition </h4> </div>
+			</div>
+		  </div>
+
+		<ul data-accordion class="bx--accordion bx--col-lg-8">
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title "> Member Classes ( 3 ) </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab"> 
+						 
+						<div class="bx--structured-list-tbody">
+							
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td">
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> CatalogService </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> Category </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> Product </li>
+								</ul>
+								
+								</div> 
+							</div> 
+
+						</div>
+					</section>
+				</div>
+			</li>
+			
+			<!-- example cluster section 2 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> External-Facing Classes (Other Partitions Invoke These Methods) </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab"> 
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Class Name</div>
+								<div class="bx--structured-list-th">Methods (Invoked by Other Partitions)</div>
+							</div>
+						</div>
+
+						<div class="bx--structured-list-tbody">
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> CatalogService  </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getCategory </li>
+								
+									<li class="jfunction"> getItem </li>
+								
+									<li class="jfunction"> getItemListByProduct </li>
+								
+									<li class="jfunction"> getProduct </li>
+								
+									<li class="jfunction"> getProductListByCategory </li>
+								
+									<li class="jfunction"> isItemInStock </li>
+								
+									<li class="jfunction"> searchProductList </li>
+								
+								</div>
+									<br>
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> Category<font color="#026acc"> <em> implements </em> java.io.Serializable </font>  </div>
+								<div class="bx--structured-list-td">
+								
+								</div>
+									<br>
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> Product<font color="#026acc"> <em> implements </em> java.io.Serializable </font>  </div>
+								<div class="bx--structured-list-td">
+								
+								</div>
+									<br>
+							</div>
+							
+							  
+						</div>
+					</section>
+				</div>
+			</li>	
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1" >
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"  >   Non-Primitive Object Parameters Passed From Outside To This Partition  </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Parameter Object Type</div>
+								<div class="bx--structured-list-th">Methods (Accepting the Parameter Object)</div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Category </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CatalogService.getCategory </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Item </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CatalogService.getItem </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> java.lang.String </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CatalogService.getCategory </li>
+								
+									<li class="jfunction"> CatalogService.getItem </li>
+								
+									<li class="jfunction"> CatalogService.getItemListByProduct </li>
+								
+									<li class="jfunction"> CatalogService.getProduct </li>
+								
+									<li class="jfunction"> CatalogService.getProductListByCategory </li>
+								
+									<li class="jfunction"> CatalogService.isItemInStock </li>
+								
+									<li class="jfunction"> CatalogService.searchProductList </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> java.util.List </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CatalogService.getItemListByProduct </li>
+								
+									<li class="jfunction"> CatalogService.getProductListByCategory </li>
+								
+									<li class="jfunction"> CatalogService.searchProductList </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Product </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CatalogService.getProduct </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> Partition Invokes the Following Class.Method(s) Residing Outside This Partition</div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Outside Partition</div>
+								<div class="bx--structured-list-th">Class Name</div>
+								<div class="bx--structured-list-th">Methods</div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition2"> partition2 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > Item </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getProduct </li>
+								
+									<li class="jfunction"> Item </li>
+								
+									<li class="jfunction"> setAttribute1 </li>
+								
+									<li class="jfunction"> setItemId </li>
+								
+									<li class="jfunction"> setListPrice </li>
+								
+									<li class="jfunction"> setProduct </li>
+								
+									<li class="jfunction"> setQuantity </li>
+								
+									<li class="jfunction"> setStatus </li>
+								
+									<li class="jfunction"> setSupplierId </li>
+								
+									<li class="jfunction"> setUnitCost </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> Partition Has References To The Following Classes Outside The Partition </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Class (of Outside Partition)</div>
+								<div class="bx--structured-list-th">Outside Partition</div>
+								<div class="bx--structured-list-th">Referenced by (Current Partition) </div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Item </div>
+								<div class="bx--structured-list-td" > <a href="#partition2"> partition2 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CatalogService.getItem </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+		</ul>
+
+	<div> <br> <br> </div>
+
+	 
+		<div class="bx--row">
+			<div class="bx--col bx--col-lg-8">
+			  <div class="bx--tile  partition_header" id="partition1"> <h4> partition1 Partition </h4> </div>
+			</div>
+		  </div>
+
+		<ul data-accordion class="bx--accordion bx--col-lg-8">
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title "> Member Classes ( 2 ) </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab"> 
+						 
+						<div class="bx--structured-list-tbody">
+							
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td">
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> AbstractActionBean </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> CatalogActionBean </li>
+								</ul>
+								
+								</div> 
+							</div> 
+
+						</div>
+					</section>
+				</div>
+			</li>
+			
+			<!-- example cluster section 2 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> External-Facing Classes (Other Partitions Invoke These Methods) </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab"> 
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Class Name</div>
+								<div class="bx--structured-list-th">Methods (Invoked by Other Partitions)</div>
+							</div>
+						</div>
+
+						<div class="bx--structured-list-tbody">
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> AbstractActionBean<font color="#026acc"> <em> implements </em> net.sourceforge.stripes.action.ActionBean,java.io.Serializable </font>  </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> AbstractActionBean </li>
+								
+									<li class="jfunction"> setMessage </li>
+								
+								</div>
+									<br>
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> CatalogActionBean<font color="#ED553B"> <em> extends </em> org.mybatis.jpetstore.web.actions.AbstractActionBean </font>  </div>
+								<div class="bx--structured-list-td">
+								
+								</div>
+									<br>
+							</div>
+							
+							  
+						</div>
+					</section>
+				</div>
+			</li>	
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1" >
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"  >   Non-Primitive Object Parameters Passed From Outside To This Partition  </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Parameter Object Type</div>
+								<div class="bx--structured-list-th">Methods (Accepting the Parameter Object)</div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> java.lang.String </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> AbstractActionBean.setMessage </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> Partition Invokes the Following Class.Method(s) Residing Outside This Partition</div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Outside Partition</div>
+								<div class="bx--structured-list-th">Class Name</div>
+								<div class="bx--structured-list-th">Methods</div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition0"> partition0 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > CatalogService </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getCategory </li>
+								
+									<li class="jfunction"> getItem </li>
+								
+									<li class="jfunction"> getItemListByProduct </li>
+								
+									<li class="jfunction"> getProduct </li>
+								
+									<li class="jfunction"> getProductListByCategory </li>
+								
+									<li class="jfunction"> searchProductList </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition2"> partition2 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > Item </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getProduct </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> Partition Has References To The Following Classes Outside The Partition </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Class (of Outside Partition)</div>
+								<div class="bx--structured-list-th">Outside Partition</div>
+								<div class="bx--structured-list-th">Referenced by (Current Partition) </div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> CatalogService </div>
+								<div class="bx--structured-list-td" > <a href="#partition0"> partition0 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CatalogActionBean </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Category </div>
+								<div class="bx--structured-list-td" > <a href="#partition0"> partition0 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CatalogActionBean </li>
+								
+									<li class="jfunction"> CatalogActionBean.getCategory </li>
+								
+									<li class="jfunction"> CatalogActionBean.setCategory </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Product </div>
+								<div class="bx--structured-list-td" > <a href="#partition0"> partition0 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CatalogActionBean </li>
+								
+									<li class="jfunction"> CatalogActionBean.getProduct </li>
+								
+									<li class="jfunction"> CatalogActionBean.setProduct </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Item </div>
+								<div class="bx--structured-list-td" > <a href="#partition2"> partition2 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CatalogActionBean </li>
+								
+									<li class="jfunction"> CatalogActionBean.getItem </li>
+								
+									<li class="jfunction"> CatalogActionBean.setItem </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+		</ul>
+
+	<div> <br> <br> </div>
+
+	 
+		<div class="bx--row">
+			<div class="bx--col bx--col-lg-8">
+			  <div class="bx--tile  partition_header" id="partition2"> <h4> partition2 Partition </h4> </div>
+			</div>
+		  </div>
+
+		<ul data-accordion class="bx--accordion bx--col-lg-8">
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title "> Member Classes ( 4 ) </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab"> 
+						 
+						<div class="bx--structured-list-tbody">
+							
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td">
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> Cart </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> CartActionBean </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> CartItem </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> Item </li>
+								</ul>
+								
+								</div> 
+							</div> 
+
+						</div>
+					</section>
+				</div>
+			</li>
+			
+			<!-- example cluster section 2 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> External-Facing Classes (Other Partitions Invoke These Methods) </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab"> 
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Class Name</div>
+								<div class="bx--structured-list-th">Methods (Invoked by Other Partitions)</div>
+							</div>
+						</div>
+
+						<div class="bx--structured-list-tbody">
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> Cart<font color="#026acc"> <em> implements </em> java.io.Serializable </font>  </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getAllCartItems </li>
+								
+									<li class="jfunction"> getSubTotal </li>
+								
+								</div>
+									<br>
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> CartActionBean<font color="#ED553B"> <em> extends </em> org.mybatis.jpetstore.web.actions.AbstractActionBean </font>  </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> clear </li>
+								
+									<li class="jfunction"> getCart </li>
+								
+								</div>
+									<br>
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> CartItem<font color="#026acc"> <em> implements </em> java.io.Serializable </font>  </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getItem </li>
+								
+									<li class="jfunction"> getQuantity </li>
+								
+								</div>
+									<br>
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> Item<font color="#026acc"> <em> implements </em> java.io.Serializable </font>  </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getItemId </li>
+								
+									<li class="jfunction"> getListPrice </li>
+								
+									<li class="jfunction"> getProduct </li>
+								
+									<li class="jfunction"> Item </li>
+								
+									<li class="jfunction"> setAttribute1 </li>
+								
+									<li class="jfunction"> setItemId </li>
+								
+									<li class="jfunction"> setListPrice </li>
+								
+									<li class="jfunction"> setProduct </li>
+								
+									<li class="jfunction"> setQuantity </li>
+								
+									<li class="jfunction"> setStatus </li>
+								
+									<li class="jfunction"> setSupplierId </li>
+								
+									<li class="jfunction"> setUnitCost </li>
+								
+								</div>
+									<br>
+							</div>
+							
+							  
+						</div>
+					</section>
+				</div>
+			</li>	
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1" >
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"  >   Non-Primitive Object Parameters Passed From Outside To This Partition  </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Parameter Object Type</div>
+								<div class="bx--structured-list-th">Methods (Accepting the Parameter Object)</div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Cart </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CartActionBean.getCart </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Item </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CartItem.getItem </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> java.lang.String </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> Item.getItemId </li>
+								
+									<li class="jfunction"> Item.setAttribute1 </li>
+								
+									<li class="jfunction"> Item.setItemId </li>
+								
+									<li class="jfunction"> Item.setStatus </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> java.math.BigDecimal </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> Cart.getSubTotal </li>
+								
+									<li class="jfunction"> Item.getListPrice </li>
+								
+									<li class="jfunction"> Item.setListPrice </li>
+								
+									<li class="jfunction"> Item.setUnitCost </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> java.util.Iterator </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> Cart.getAllCartItems </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Product </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> Item.getProduct </li>
+								
+									<li class="jfunction"> Item.setProduct </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> Partition Invokes the Following Class.Method(s) Residing Outside This Partition</div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Outside Partition</div>
+								<div class="bx--structured-list-th">Class Name</div>
+								<div class="bx--structured-list-th">Methods</div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition0"> partition0 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > CatalogService </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getItem </li>
+								
+									<li class="jfunction"> isItemInStock </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition1"> partition1 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > AbstractActionBean </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> AbstractActionBean </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> Partition Has References To The Following Classes Outside The Partition </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Class (of Outside Partition)</div>
+								<div class="bx--structured-list-th">Outside Partition</div>
+								<div class="bx--structured-list-th">Referenced by (Current Partition) </div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> CatalogService </div>
+								<div class="bx--structured-list-td" > <a href="#partition0"> partition0 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> CartActionBean </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Product </div>
+								<div class="bx--structured-list-td" > <a href="#partition0"> partition0 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> Item </li>
+								
+									<li class="jfunction"> Item.getProduct </li>
+								
+									<li class="jfunction"> Item.setProduct </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+		</ul>
+
+	<div> <br> <br> </div>
+
+	 
+		<div class="bx--row">
+			<div class="bx--col bx--col-lg-8">
+			  <div class="bx--tile  partition_header" id="partition3"> <h4> partition3 Partition </h4> </div>
+			</div>
+		  </div>
+
+		<ul data-accordion class="bx--accordion bx--col-lg-8">
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title "> Member Classes ( 3 ) </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab"> 
+						 
+						<div class="bx--structured-list-tbody">
+							
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td">
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> Account </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> AccountActionBean </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> AccountService </li>
+								</ul>
+								
+								</div> 
+							</div> 
+
+						</div>
+					</section>
+				</div>
+			</li>
+			
+			<!-- example cluster section 2 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> External-Facing Classes (Other Partitions Invoke These Methods) </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab"> 
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Class Name</div>
+								<div class="bx--structured-list-th">Methods (Invoked by Other Partitions)</div>
+							</div>
+						</div>
+
+						<div class="bx--structured-list-tbody">
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> Account<font color="#026acc"> <em> implements </em> java.io.Serializable </font>  </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getAddress1 </li>
+								
+									<li class="jfunction"> getAddress2 </li>
+								
+									<li class="jfunction"> getCity </li>
+								
+									<li class="jfunction"> getCountry </li>
+								
+									<li class="jfunction"> getFirstName </li>
+								
+									<li class="jfunction"> getLastName </li>
+								
+									<li class="jfunction"> getState </li>
+								
+									<li class="jfunction"> getUsername </li>
+								
+									<li class="jfunction"> getZip </li>
+								
+								</div>
+									<br>
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> AccountActionBean<font color="#ED553B"> <em> extends </em> org.mybatis.jpetstore.web.actions.AbstractActionBean </font>  </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getAccount </li>
+								
+									<li class="jfunction"> isAuthenticated </li>
+								
+								</div>
+									<br>
+							</div>
+							
+							  
+						</div>
+					</section>
+				</div>
+			</li>	
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1" >
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"  >   Non-Primitive Object Parameters Passed From Outside To This Partition  </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Parameter Object Type</div>
+								<div class="bx--structured-list-th">Methods (Accepting the Parameter Object)</div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Account </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> AccountActionBean.getAccount </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> java.lang.String </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> Account.getAddress1 </li>
+								
+									<li class="jfunction"> Account.getAddress2 </li>
+								
+									<li class="jfunction"> Account.getCity </li>
+								
+									<li class="jfunction"> Account.getCountry </li>
+								
+									<li class="jfunction"> Account.getFirstName </li>
+								
+									<li class="jfunction"> Account.getLastName </li>
+								
+									<li class="jfunction"> Account.getState </li>
+								
+									<li class="jfunction"> Account.getUsername </li>
+								
+									<li class="jfunction"> Account.getZip </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> Partition Invokes the Following Class.Method(s) Residing Outside This Partition</div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Outside Partition</div>
+								<div class="bx--structured-list-th">Class Name</div>
+								<div class="bx--structured-list-th">Methods</div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition0"> partition0 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > CatalogService </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getProductListByCategory </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition1"> partition1 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > AbstractActionBean </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> AbstractActionBean </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> Partition Has References To The Following Classes Outside The Partition </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Class (of Outside Partition)</div>
+								<div class="bx--structured-list-th">Outside Partition</div>
+								<div class="bx--structured-list-th">Referenced by (Current Partition) </div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> CatalogService </div>
+								<div class="bx--structured-list-td" > <a href="#partition0"> partition0 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> AccountActionBean </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+		</ul>
+
+	<div> <br> <br> </div>
+
+	 
+		<div class="bx--row">
+			<div class="bx--col bx--col-lg-8">
+			  <div class="bx--tile  partition_header" id="partition4"> <h4> partition4 Partition </h4> </div>
+			</div>
+		  </div>
+
+		<ul data-accordion class="bx--accordion bx--col-lg-8">
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title "> Member Classes ( 5 ) </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab"> 
+						 
+						<div class="bx--structured-list-tbody">
+							
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td">
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> LineItem </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> Order </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> OrderActionBean </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> OrderService </li>
+								</ul>
+								 
+								 
+								<ul class="bx--list--unordered bx--list--nested"> 
+									<li class="bx--list__item jclass"> Sequence </li>
+								</ul>
+								
+								</div> 
+							</div> 
+
+						</div>
+					</section>
+				</div>
+			</li>
+			
+			<!-- example cluster section 2 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> External-Facing Classes (Other Partitions Invoke These Methods) </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab"> 
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Class Name</div>
+								<div class="bx--structured-list-th">Methods (Invoked by Other Partitions)</div>
+							</div>
+						</div>
+
+						<div class="bx--structured-list-tbody">
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> LineItem<font color="#026acc"> <em> implements </em> java.io.Serializable </font>  </div>
+								<div class="bx--structured-list-td">
+								
+								</div>
+									<br>
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> Order<font color="#026acc"> <em> implements </em> java.io.Serializable </font>  </div>
+								<div class="bx--structured-list-td">
+								
+								</div>
+									<br>
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td white-space: break-spaces jclass"> OrderActionBean<font color="#ED553B"> <em> extends </em> org.mybatis.jpetstore.web.actions.AbstractActionBean </font>  </div>
+								<div class="bx--structured-list-td">
+								
+								</div>
+									<br>
+							</div>
+							
+							  
+						</div>
+					</section>
+				</div>
+			</li>	
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1" >
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"  >   Non-Primitive Object Parameters Passed From Outside To This Partition  </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Parameter Object Type</div>
+								<div class="bx--structured-list-th">Methods (Accepting the Parameter Object)</div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass">  None </div>
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+
+			<!-- example cluster section 1 -->
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> Partition Invokes the Following Class.Method(s) Residing Outside This Partition</div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Outside Partition</div>
+								<div class="bx--structured-list-th">Class Name</div>
+								<div class="bx--structured-list-th">Methods</div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition1"> partition1 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > AbstractActionBean </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> AbstractActionBean </li>
+								
+									<li class="jfunction"> setMessage </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition2"> partition2 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > CartItem </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getItem </li>
+								
+									<li class="jfunction"> getQuantity </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition2"> partition2 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > Item </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getItemId </li>
+								
+									<li class="jfunction"> getListPrice </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition2"> partition2 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > Cart </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getAllCartItems </li>
+								
+									<li class="jfunction"> getSubTotal </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition2"> partition2 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > CartActionBean </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> clear </li>
+								
+									<li class="jfunction"> getCart </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition3"> partition3 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > Account </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getAddress1 </li>
+								
+									<li class="jfunction"> getAddress2 </li>
+								
+									<li class="jfunction"> getCity </li>
+								
+									<li class="jfunction"> getCountry </li>
+								
+									<li class="jfunction"> getFirstName </li>
+								
+									<li class="jfunction"> getLastName </li>
+								
+									<li class="jfunction"> getState </li>
+								
+									<li class="jfunction"> getUsername </li>
+								
+									<li class="jfunction"> getZip </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td" >  <a href="#partition3"> partition3 </a> </div>
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass" > AccountActionBean </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> getAccount </li>
+								
+									<li class="jfunction"> isAuthenticated </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+
+			<li data-accordion-item class="bx--accordion__item collapsible">
+				<button class="bx--accordion__heading extra" aria-expanded="false" aria-controls="pane1">
+					<svg focusable="false" preserveAspectRatio="xMidYMid meet" style="will-change: transform;" xmlns="http://www.w3.org/2000/svg" class="bx--accordion__arrow" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M11 8L6 13 5.3 12.3 9.6 8 5.3 3.7 6 3z"></path></svg>
+					<div class="bx--accordion__title"> Partition Has References To The Following Classes Outside The Partition </div>
+				</button>
+				<div id="pane1" class="bx--accordion__content">
+					<br>  
+					<section class="bx--structured-list" class="tab">
+						<div class="bx--structured-list-thead">
+							<div class="bx--structured-list-row bx--structured-list-row--header-row">
+								<div class="bx--structured-list-th">Class (of Outside Partition)</div>
+								<div class="bx--structured-list-th">Outside Partition</div>
+								<div class="bx--structured-list-th">Referenced by (Current Partition) </div>
+							</div>
+						</div>
+						 
+						<div class="bx--structured-list-tbody">
+
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Cart </div>
+								<div class="bx--structured-list-td" > <a href="#partition2"> partition2 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> Order.initOrder </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> CartItem </div>
+								<div class="bx--structured-list-td" > <a href="#partition2"> partition2 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> LineItem.LineItem [overloaded_#002] </li>
+								
+									<li class="jfunction"> Order.addLineItem [overloaded_#001] </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Item </div>
+								<div class="bx--structured-list-td" > <a href="#partition2"> partition2 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> LineItem </li>
+								
+									<li class="jfunction"> LineItem.getItem </li>
+								
+									<li class="jfunction"> LineItem.setItem </li>
+								
+								</div>
+								 
+							</div>
+							 
+							<div class="bx--structured-list-row">
+								<div class="bx--structured-list-td bx--structured-list-content--nowrap jclass"> Account </div>
+								<div class="bx--structured-list-td" > <a href="#partition3"> partition3 </a> </div>
+								<div class="bx--structured-list-td">
+								
+									<li class="jfunction"> Order.initOrder </li>
+								
+								</div>
+								 
+							</div>
+							
+
+						</div>
+					</section>
+				</div>
+			</li>
+		</ul>
+
+	<div> <br> <br> </div>
+
+	
+	<div class="bx--structured-list-td bx--accordion__title version"> aipl_version: v2.0.0r40 </div>
+	
+</body>
+
+
+</html>

@@ -1,0 +1,10 @@
+[book, new, cargo];BookFormatType;1.8502928;
+[load, cargo, routing];OfficeEquipmentStore;2.3819933;
+[load, cargo, tracking];OfficeEquipmentStore;2.3819933;
+[assign, cargo, route];BusTrip;2.4524517;
+[change, destination];TouristAttraction;1.4967905;
+[change, deadline];ScheduleAction;1.5822585;
+[request, possible, routes, cargo];DigitalDocumentPermissionType;3.42063;
+[shipping, locations];LocationFeatureSpecification;1.1;
+[cargos];Vehicle;0.6120057;
+[tracking, ids];EnumerationValueSet;1.8379456;

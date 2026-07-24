@@ -1,0 +1,17 @@
+{
+  "serviceName": "jpetstore",
+  "operations": [
+    {"name": "signon"}, {"name": "newAccount"}, {"name": "editAccount"},
+    {"name": "viewCategory"}, {"name": "viewProduct"}, {"name": "viewItem"}, {"name": "searchProducts"},
+    {"name": "addItemToCart"}, {"name": "removeItemFromCart"}, {"name": "updateCartQuantities"}, {"name": "viewCart"},
+    {"name": "listOrders"}, {"name": "newOrder"}, {"name": "viewOrder"}, {"name": "confirmOrder"}
+  ],
+  "resources": [
+    {"name": "username"}, {"name": "password"}, {"name": "email"}, {"name": "firstName"}, {"name": "lastName"},
+    {"name": "status"}, {"name": "address"}, {"name": "city"}, {"name": "state"}, {"name": "zip"},
+    {"name": "country"}, {"name": "phone"}, {"name": "language"}, {"name": "banner"},
+    {"name": "category"}, {"name": "product"}, {"name": "item"}, {"name": "description"}, {"name": "price"},
+    {"name": "stock"}, {"name": "supplier"}, {"name": "cart"}, {"name": "quantity"}, {"name": "total"},
+    {"name": "order"}, {"name": "payment"}, {"name": "shipping"}, {"name": "lineItem"}, {"name": "creditCard"}
+  ]
+}

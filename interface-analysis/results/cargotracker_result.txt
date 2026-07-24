@@ -1,0 +1,3 @@
+cargotracker;StructuredValue;1
+cargotracker;Product;1
+cargotracker;Place;1

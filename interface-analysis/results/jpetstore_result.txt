@@ -1,0 +1,4 @@
+jpetstore;Intangible;3
+jpetstore;Action;7
+jpetstore;Product;2
+jpetstore;FinancialProduct;2
