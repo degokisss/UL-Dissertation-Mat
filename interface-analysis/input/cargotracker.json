@@ -4,12 +4,14 @@
     {"name": "bookNewCargo"}, {"name": "loadCargoForRouting"}, {"name": "loadCargoForTracking"},
     {"name": "assignCargoToRoute"}, {"name": "changeDestination"}, {"name": "changeDeadline"},
     {"name": "requestPossibleRoutesForCargo"}, {"name": "listShippingLocations"},
-    {"name": "listAllCargos"}, {"name": "listAllTrackingIds"}
+    {"name": "listAllCargos"}, {"name": "listAllTrackingIds"},
+    {"name": "submitReport"}, {"name": "tracking"}
   ],
   "resources": [
     {"name": "trackingId"}, {"name": "origin"}, {"name": "destination"}, {"name": "arrivalDeadline"},
     {"name": "destinationUnLocode"}, {"name": "unLocode"}, {"name": "location"}, {"name": "cargo"},
     {"name": "cargoRoute"}, {"name": "cargoStatus"}, {"name": "routeCandidate"}, {"name": "itinerary"},
-    {"name": "leg"}, {"name": "voyage"}, {"name": "handlingEvent"}, {"name": "delivery"}
+    {"name": "leg"}, {"name": "voyage"}, {"name": "handlingEvent"}, {"name": "delivery"},
+    {"name": "handlingReport"}, {"name": "completionTime"}, {"name": "eventType"}, {"name": "voyageNumber"}
   ]
 }

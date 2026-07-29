@@ -1,3 +1,5 @@
 cargotracker;StructuredValue;1
 cargotracker;Product;1
 cargotracker;Place;1
+cargotracker;CreativeWork;1
+cargotracker;Action;1

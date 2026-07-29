@@ -8,3 +8,5 @@
 [shipping, locations];LocationFeatureSpecification;1.1;
 [cargos];Vehicle;0.6120057;
 [tracking, ids];EnumerationValueSet;1.8379456;
+[submit, report];Report;1.1;
+[tracking];ReadAction;1.0;
