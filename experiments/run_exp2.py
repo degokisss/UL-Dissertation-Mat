@@ -15,6 +15,75 @@ LLM endpoint via env (defaults match the deploy guide):
 """
 import argparse, json, os, re, sys, urllib.request
 
+SIG_TAIL_RE = re.compile(r'\)\s*(?:throws\s+[\w.<>\[\],\s]*[\w])?\s*\{\Z')
+TYPE_HEAD_RE = re.compile(r'\b(?:class|interface|enum|@interface)\b')
+IMPORT_RE = re.compile(r'(?m)^\s*import\s+[\w.*]+\s*;\s*\n')
+MAX_HEAD_LEN = 600   # a real method/ctor signature is never longer than this
+
+def compact_source(text, shorten_strings=25):
+    """Shrink one Java file for prompt-size budget: drop imports and
+    comments, replace method/constructor body CONTENTS with a placeholder,
+    truncate long string literals. Keeps package/class/field/method
+    signatures and annotations intact (the structural information a
+    decomposition task needs). Comment- and string-literal-aware so stray
+    braces inside them don't corrupt the brace-depth count."""
+    text = IMPORT_RE.sub('', text)
+    out = []
+    i, n = 0, len(text)
+    buf_start = 0
+    depth = 0
+    strip_body_at = None
+    while i < n:
+        ch = text[i]
+        if ch == '/' and i + 1 < n and text[i + 1] == '/':
+            j = text.find('\n', i)
+            end = n if j == -1 else j + 1
+            if buf_start is not None:
+                out.append(text[buf_start:i]); buf_start = end
+            i = end; continue
+        if ch == '/' and i + 1 < n and text[i + 1] == '*':
+            j = text.find('*/', i + 2)
+            end = n if j == -1 else j + 2
+            if buf_start is not None:
+                out.append(text[buf_start:i]); buf_start = end
+            i = end; continue
+        if ch == '"':
+            j = i + 1
+            while j < n and text[j] != '"':
+                if text[j] == '\\': j += 1
+                j += 1
+            end = min(j + 1, n)
+            if shorten_strings and buf_start is not None and (end - i) > shorten_strings + 2:
+                out.append(text[buf_start:i])
+                out.append('"' + text[i + 1:i + 1 + shorten_strings] + '..."')
+                buf_start = end
+            i = end; continue
+        if ch == "'":
+            j = i + 1
+            while j < n and text[j] != "'":
+                if text[j] == '\\': j += 1
+                j += 1
+            i = min(j + 1, n); continue
+        if ch == '{':
+            if strip_body_at is None:
+                back = max(text.rfind(c, max(0, i - MAX_HEAD_LEN), i) for c in (';', '{', '}'))
+                head = text[max(back + 1, i - MAX_HEAD_LEN):i + 1].strip()
+                if SIG_TAIL_RE.search(head) and not TYPE_HEAD_RE.search(head):
+                    out.append(text[buf_start:i + 1])
+                    strip_body_at = depth + 1
+                    buf_start = None
+            depth += 1
+        elif ch == '}':
+            depth -= 1
+            if strip_body_at is not None and depth == strip_body_at - 1:
+                out.append(" /* body omitted for prompt size */ }")
+                strip_body_at = None
+                buf_start = i + 1
+        i += 1
+    if buf_start is not None:
+        out.append(text[buf_start:])
+    return "".join(out)
+
 SYSTEM = """You are a senior software architect who decomposes ONE SPECIFIC EXISTING \
 monolithic Java application into microservices. You are given that application's actual \
 class list, class-dependency graph, and source code. Base the decomposition strictly on \
@@ -33,7 +102,7 @@ Hard constraints:
 - Group by cohesion and by the actual dependencies shown; choose the number of services that
   best fits the code, do NOT pad to a target count."""
 
-def read_sources(src, pkgs):
+def read_sources(src, pkgs, compact=False):
     out, classes = [], []
     for root, _, files in os.walk(src):
         if pkgs and not any(("/"+p.replace(".", "/")+"/") in (root+"/") for p in pkgs):
@@ -41,7 +110,12 @@ def read_sources(src, pkgs):
         for f in sorted(files):
             if f.endswith(".java"):
                 p = os.path.join(root, f)
-                out.append(f"// FILE: {os.path.relpath(p, src)}\n" + open(p, encoding="utf-8", errors="ignore").read())
+                text = open(p, encoding="utf-8", errors="ignore").read()
+                if compact:
+                    text = re.sub(r'\n{3,}', '\n\n', compact_source(text))
+                    out.append(f"// {f}\n" + text)
+                else:
+                    out.append(f"// FILE: {os.path.relpath(p, src)}\n" + text)
                 classes.append(f[:-5])
     return "\n\n".join(out), sorted(set(classes))
 
@@ -67,13 +141,17 @@ def decomposition_schema(classes):
 
 def call_llm(messages, response_format):
     base = os.environ.get("LLM_BASE_URL", "http://localhost:8000/v1")
-    body = json.dumps({
+    body = {
         "model": os.environ.get("LLM_MODEL", "qwen-coder-32b"),
         "temperature": float(os.environ.get("LLM_TEMPERATURE", "0.2")),
-        "top_p": 0.95, "seed": int(os.environ.get("LLM_SEED", "42")), "max_tokens": 8192,
+        "top_p": 0.95, "seed": int(os.environ.get("LLM_SEED", "42")),
+        "max_tokens": int(os.environ.get("LLM_MAX_TOKENS", "8192")),
         "response_format": response_format,
         "messages": messages,
-    }).encode()
+    }
+    if os.environ.get("LLM_NUM_CTX"):     # Ollama silently truncates to a small
+        body["options"] = {"num_ctx": int(os.environ["LLM_NUM_CTX"])}  # default otherwise
+    body = json.dumps(body).encode()
     req = urllib.request.Request(base.rstrip("/") + "/chat/completions", data=body,
         headers={"Content-Type": "application/json",
                  "Authorization": "Bearer " + os.environ.get("LLM_KEY", "ul-dissertation-local")})
@@ -105,9 +183,12 @@ def main():
     ap.add_argument("--free", dest="strict", action="store_false",
                     help="free-form prompting (no enum constraint / repair); use to reproduce the hallucination baseline")
     ap.add_argument("--max-repairs", type=int, default=3, help="max validate-and-repair rounds in strict mode")
+    ap.add_argument("--compact-source", action="store_true",
+                    help="drop imports/comments, strip method-body contents, truncate long string "
+                         "literals; use when full source would exceed the model's context window")
     a = ap.parse_args()
     pkgs = [p.strip() for p in a.package.split(",") if p.strip()]
-    source, classes = read_sources(a.src, pkgs)
+    source, classes = read_sources(a.src, pkgs, compact=a.compact_source)
     user = (f"Application: {a.app} — {a.desc}\n\n"
             f"Classes to partition ({len(classes)}):\n" + ", ".join(classes) + "\n\n"
             f"Class dependency graph (caller -> callee : weight = number of static references):\n"
