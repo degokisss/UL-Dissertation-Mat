@@ -17,6 +17,12 @@ user = (f"Application: CargoTracker — Java EE cargo booking, routing, and trac
 
 print(f"probe prompt: {len(user)} chars (~{len(user)//4} tokens)", file=sys.stderr)
 
+
+def strip_think(text):
+    if "</think>" in text:
+        return text.rsplit("</think>", 1)[-1].strip()
+    return text.strip()
+
 model = os.environ.get("LLM_MODEL", "qwen3:32b")
 num_ctx = int(os.environ.get("LLM_NUM_CTX", "40960"))
 
@@ -32,7 +38,7 @@ reqA = urllib.request.Request(base.rstrip("/") + "/chat/completions",
 with urllib.request.urlopen(reqA, timeout=300) as r:
     respA = json.load(r)
 print("=== A: OpenAI-compat endpoint (/v1/chat/completions) ===")
-print(respA["choices"][0]["message"]["content"])
+print(strip_think(respA["choices"][0]["message"]["content"]))
 
 # --- test B: Ollama's native endpoint ---
 reqB = urllib.request.Request("http://localhost:11434/api/chat",
@@ -42,7 +48,7 @@ reqB = urllib.request.Request("http://localhost:11434/api/chat",
 with urllib.request.urlopen(reqB, timeout=300) as r:
     respB = json.load(r)
 print("\n=== B: Ollama native endpoint (/api/chat) ===")
-print(respB["message"]["content"])
+print(strip_think(respB["message"]["content"]))
 
 print("\n---")
 print("real answer: 101 classes; real first 3:", classes[:3], "; real last 3:", classes[-3:])
