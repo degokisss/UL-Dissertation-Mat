@@ -17,14 +17,19 @@ import argparse, json, os, re, sys, urllib.request
 
 SIG_TAIL_RE = re.compile(r'\)\s*(?:throws\s+[\w.<>\[\],\s]*[\w])?\s*\{\Z')
 TYPE_HEAD_RE = re.compile(r'\b(?:class|interface|enum|@interface)\b')
+GETSET_TAIL_RE = re.compile(
+    r'(?:public|protected|private)?\s*(?:static\s+)?[\w<>\[\],.]+\s+'
+    r'(?:get|is|set)[A-Z]\w*\([^;{}]*\)\s*\{\Z')
 IMPORT_RE = re.compile(r'(?m)^\s*import\s+[\w.*]+\s*;\s*\n')
 MAX_HEAD_LEN = 600   # a real method/ctor signature is never longer than this
 
 def compact_source(text, shorten_strings=25):
     """Shrink one Java file for prompt-size budget: drop imports and
     comments, replace method/constructor body CONTENTS with a placeholder,
-    truncate long string literals. Keeps package/class/field/method
-    signatures and annotations intact (the structural information a
+    truncate long string literals, and elide trivial JavaBean
+    getter/setter methods entirely (redundant with the field declaration
+    they wrap). Keeps package/class/field/method signatures and
+    annotations intact otherwise (the structural information a
     decomposition task needs). Comment- and string-literal-aware so stray
     braces inside them don't corrupt the brace-depth count."""
     text = IMPORT_RE.sub('', text)
@@ -32,7 +37,8 @@ def compact_source(text, shorten_strings=25):
     i, n = 0, len(text)
     buf_start = 0
     depth = 0
-    strip_body_at = None
+    strip_body_at = None      # depth at which an active body-strip is happening
+    eliding = False           # True: fully drop this method (signature + body)
     while i < n:
         ch = text[i]
         if ch == '/' and i + 1 < n and text[i + 1] == '/':
@@ -69,16 +75,22 @@ def compact_source(text, shorten_strings=25):
                 back = max(text.rfind(c, max(0, i - MAX_HEAD_LEN), i) for c in (';', '{', '}'))
                 head = text[max(back + 1, i - MAX_HEAD_LEN):i + 1].strip()
                 if SIG_TAIL_RE.search(head) and not TYPE_HEAD_RE.search(head):
-                    out.append(text[buf_start:i + 1])
+                    eliding = bool(GETSET_TAIL_RE.search(head))
+                    if eliding:
+                        out.append(text[buf_start:back + 1])   # keep content before the signature
+                    else:
+                        out.append(text[buf_start:i + 1])
                     strip_body_at = depth + 1
                     buf_start = None
             depth += 1
         elif ch == '}':
             depth -= 1
             if strip_body_at is not None and depth == strip_body_at - 1:
-                out.append(" /* body omitted for prompt size */ }")
+                if not eliding:
+                    out.append(" /* body omitted for prompt size */ }")
                 strip_body_at = None
                 buf_start = i + 1
+                eliding = False
         i += 1
     if buf_start is not None:
         out.append(text[buf_start:])
