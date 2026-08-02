@@ -175,7 +175,13 @@ def call_llm(messages, response_format):
             "model": model, "stream": False, "format": fmt,
             "messages": messages,
             "options": {"num_ctx": int(num_ctx), "temperature": temperature,
-                        "seed": seed, "num_predict": max_tokens},
+                        "seed": seed, "num_predict": max_tokens,
+                        # Ollama's per-model default is repeat_penalty=1 (no
+                        # penalty), which lets long structured generations
+                        # fall into degenerate repetition loops (observed:
+                        # one field value repeated hundreds of times until
+                        # num_predict cut it off, mid-JSON).
+                        "repeat_penalty": float(os.environ.get("LLM_REPEAT_PENALTY", "1.3"))},
         }).encode()
         req = urllib.request.Request(native_base + "/api/chat", data=body,
             headers={"Content-Type": "application/json"})
