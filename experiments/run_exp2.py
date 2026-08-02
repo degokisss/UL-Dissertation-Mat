@@ -180,8 +180,13 @@ def call_llm(messages, response_format):
                         # penalty), which lets long structured generations
                         # fall into degenerate repetition loops (observed:
                         # one field value repeated hundreds of times until
-                        # num_predict cut it off, mid-JSON).
-                        "repeat_penalty": float(os.environ.get("LLM_REPEAT_PENALTY", "1.3"))},
+                        # num_predict cut it off, mid-JSON). Too high a value
+                        # (tried 1.6) pushed the model into a different
+                        # failure instead, truncating long enumerations with
+                        # a literal "..." (invalid JSON); 1.15 was the
+                        # empirically validated middle ground for qwen3:32b
+                        # on this task.
+                        "repeat_penalty": float(os.environ.get("LLM_REPEAT_PENALTY", "1.15"))},
         }).encode()
         req = urllib.request.Request(native_base + "/api/chat", data=body,
             headers={"Content-Type": "application/json"})
