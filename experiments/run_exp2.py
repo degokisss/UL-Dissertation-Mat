@@ -141,17 +141,41 @@ def decomposition_schema(classes):
 
 def call_llm(messages, response_format):
     base = os.environ.get("LLM_BASE_URL", "http://localhost:8000/v1")
-    body = {
-        "model": os.environ.get("LLM_MODEL", "qwen-coder-32b"),
-        "temperature": float(os.environ.get("LLM_TEMPERATURE", "0.2")),
-        "top_p": 0.95, "seed": int(os.environ.get("LLM_SEED", "42")),
-        "max_tokens": int(os.environ.get("LLM_MAX_TOKENS", "8192")),
+    model = os.environ.get("LLM_MODEL", "qwen-coder-32b")
+    temperature = float(os.environ.get("LLM_TEMPERATURE", "0.2"))
+    seed = int(os.environ.get("LLM_SEED", "42"))
+    max_tokens = int(os.environ.get("LLM_MAX_TOKENS", "8192"))
+    num_ctx = os.environ.get("LLM_NUM_CTX")
+
+    if num_ctx:
+        # Verified empirically (probe_ctx.py): Ollama's OpenAI-compatible
+        # endpoint (/v1/chat/completions) silently ignores options.num_ctx
+        # and keeps its small default context, truncating large prompts
+        # without erroring. Only Ollama's own native endpoint (/api/chat)
+        # actually honours it. Use the native endpoint whenever a context
+        # override is requested; the default (no LLM_NUM_CTX) path below is
+        # unchanged from Experiment 2's original OpenAI-compatible calls.
+        fmt = "json"
+        if response_format.get("type") == "json_schema":
+            fmt = response_format["json_schema"]["schema"]
+        native_base = re.sub(r"/v1/?$", "", base.rstrip("/"))
+        body = json.dumps({
+            "model": model, "stream": False, "format": fmt,
+            "messages": messages,
+            "options": {"num_ctx": int(num_ctx), "temperature": temperature,
+                        "seed": seed, "num_predict": max_tokens},
+        }).encode()
+        req = urllib.request.Request(native_base + "/api/chat", data=body,
+            headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=600) as r:
+            return json.load(r)["message"]["content"]
+
+    body = json.dumps({
+        "model": model, "temperature": temperature,
+        "top_p": 0.95, "seed": seed, "max_tokens": max_tokens,
         "response_format": response_format,
         "messages": messages,
-    }
-    if os.environ.get("LLM_NUM_CTX"):     # Ollama silently truncates to a small
-        body["options"] = {"num_ctx": int(os.environ["LLM_NUM_CTX"])}  # default otherwise
-    body = json.dumps(body).encode()
+    }).encode()
     req = urllib.request.Request(base.rstrip("/") + "/chat/completions", data=body,
         headers={"Content-Type": "application/json",
                  "Authorization": "Bearer " + os.environ.get("LLM_KEY", "ul-dissertation-local")})
